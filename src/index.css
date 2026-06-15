@@ -1,0 +1,116 @@
+/* =====================================================================
+   24/7 Education — Agent Hub
+   Design tokens + base, grounded in the 24/7 Teach design system.
+   Display: Fraunces (variable, bundled). Body/UI: Inter (Google Fonts).
+   ===================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+@font-face {
+  font-family: 'Fraunces';
+  src: url('./fonts/Fraunces.ttf') format('truetype-variations'),
+       url('./fonts/Fraunces.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* Navy family */
+  --navy-900: #10243E;
+  --navy-700: #30455c;
+  --navy-500: #63697a;
+  --navy-300: #a7b1c2;
+  /* Teal family */
+  --teal-600: #2D8990;
+  --teal-700: #1d6e73;   /* primary action on light surfaces */
+  --teal-500: #07c4c8;
+  --teal-100: #e3f4f4;
+  /* Coral family */
+  --coral-600: #b3603f;
+  --coral-400: #E8886A;
+  --coral-100: #fbe9e3;
+  /* Neutrals */
+  --bg-cool: #e6ecf0;
+  --surface: #ffffff;
+  --ink-muted: #5a6573;
+  --ink-soft: #8a93a2;
+  --border: #dde4ec;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg-cool);
+  color: var(--navy-700);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+button { font-family: inherit; cursor: pointer; }
+input, textarea { font-family: inherit; }
+input:focus, textarea:focus { outline: none; }
+input::placeholder, textarea::placeholder { color: #9aa3b2; }
+a { text-decoration: none; }
+
+/* Fraunces display helper — SOFT 0 (enterprise/crisp) per the design system. */
+.font-display {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 600;
+  font-variation-settings: 'wght' 600, 'SOFT' 0, 'opsz' 48;
+  letter-spacing: -0.015em;
+}
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@keyframes blink { 0%, 60%, 100% { opacity: .25; transform: translateY(0); } 30% { opacity: 1; transform: translateY(-3px); } }
+@keyframes pulse { 0% { opacity: .7; transform: scale(.7); } 70% { opacity: 0; transform: scale(1.5); } 100% { opacity: 0; transform: scale(1.5); } }
+
+.thread::-webkit-scrollbar, .convos::-webkit-scrollbar { width: 9px; }
+.thread::-webkit-scrollbar-thumb, .convos::-webkit-scrollbar-thumb {
+  background: #cdd6df; border-radius: 6px; border: 2px solid transparent; background-clip: content-box;
+}
+
+/* ---- Interaction states (ports of the prototype's style-hover rules) ---- */
+.btn-primary { transition: background .14s ease; }
+.btn-primary:hover { background: #185c60 !important; }
+
+.btn-ghost { transition: color .14s ease; }
+.btn-ghost:hover { color: #10243E !important; }
+
+.btn-review { transition: border-color .14s ease, background .14s ease; }
+.btn-review:hover { border-color: #bfe6e7 !important; background: #f3f9f9 !important; }
+
+.btn-outline { transition: background .14s ease; }
+.btn-outline:hover { background: #f0f8f8 !important; }
+
+.btn-soft { transition: color .14s ease, background .14s ease; }
+.btn-soft:hover { color: #1d6e73 !important; background: #eef5f5 !important; }
+
+.btn-decline { transition: border-color .14s ease, color .14s ease; }
+.btn-decline:hover { border-color: #e0b3a3 !important; color: #b3603f !important; }
+
+.btn-icon { transition: background .14s ease, color .14s ease; }
+.btn-icon:hover { background: #eef2f6 !important; color: #1d6e73 !important; }
+
+.chip-remove { transition: color .14s ease, background .14s ease; }
+.chip-remove:hover { color: #b3603f !important; background: #f6e9e4 !important; }
+
+.card-agent { transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; }
+.card-agent:hover { transform: translateY(-3px); box-shadow: 0 16px 32px -14px rgba(16,36,62,.2); border-color: #bfe6e7; }
+
+.card-flagship { transition: transform .2s ease, box-shadow .2s ease; }
+.card-flagship:hover { transform: translateY(-2px); box-shadow: 0 26px 52px -18px rgba(16,36,62,.6); }
+
+.send-btn { transition: background .14s ease; }
+.send-btn:hover { background: #185c60 !important; }
+
+.convo-btn { transition: background .14s ease; }
+
+/* Responsive: collapse the login two-column and the chat sidebar on small screens. */
+@media (max-width: 860px) {
+  .login-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
+  .login-hero { max-width: 100% !important; }
+  .chat-sidebar { display: none !important; }
+  .hub-header-id { display: none !important; }
+}

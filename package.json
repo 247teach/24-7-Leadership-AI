@@ -1,0 +1,21 @@
+{
+  "name": "24-7-leadership-ai",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Agent Hub — internal AI agent hub for the 24/7 Education team.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.4",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.1",
+    "vite": "^5.4.2"
+  }
+}
