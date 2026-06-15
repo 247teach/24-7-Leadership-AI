@@ -1,25 +1,18 @@
 // =====================================================================
-// Agent reply — STUB.
+// Agent reply.
 //
-// This is where a real model call goes. For governance reasons the call
-// must NOT run from the browser with a provider key; route it through a
-// Supabase Edge Function (or your backend) that:
-//   1. authenticates the member,
-//   2. retrieves only the knowledge their clearance allows,
-//   3. calls the Claude API server-side, and
-//   4. returns the grounded answer.
+// Calls the `agent-reply` Supabase Edge Function, which runs the Claude
+// API server-side (the key never reaches the browser) and grounds the
+// answer in the conversation. The user message must already be persisted
+// to the conversation before this is called — the function reads history
+// from the database under the caller's RLS.
 //
-// To wire it up, replace the body of generateAgentReply with e.g.:
-//
-//   const { data, error } = await supabase.functions.invoke('agent-reply', {
-//     body: { agentId, conversationId, messages },
-//   })
-//   return data.reply
-//
-// Recommended model: claude-opus-4-8 (or claude-sonnet-4-6 for lower cost).
-// Until then we return a canned, on-brand placeholder per agent so the
-// full UX (send, thinking, reply, copy, flag, listen) is exercisable.
+// If the function is unavailable (e.g. ANTHROPIC_API_KEY not yet set as a
+// Supabase secret), we fall back to an on-brand canned reply so the full
+// UX stays exercisable.
 // =====================================================================
+
+import { supabase } from './supabase'
 
 const CANNED = {
   rebecca:
@@ -35,8 +28,17 @@ const CANNED = {
 const FALLBACK =
   'Let me ground that in our governed knowledge base. Here is a starting answer, and I can go deeper on any part. What would be most useful next?'
 
-export async function generateAgentReply({ agentId /*, conversationId, messages */ }) {
-  // Simulate model latency so the typing indicator reads naturally.
-  await new Promise((r) => setTimeout(r, 1100))
-  return CANNED[agentId] || FALLBACK
+export async function generateAgentReply({ agentId, conversationId }) {
+  try {
+    const { data, error } = await supabase.functions.invoke('agent-reply', {
+      body: { agentId, conversationId },
+    })
+    if (error) throw error
+    if (data?.reply) return data.reply
+    throw new Error('Empty reply')
+  } catch (err) {
+    // Edge function not configured / unreachable — degrade gracefully.
+    console.warn('agent-reply unavailable, using fallback:', err?.message || err)
+    return CANNED[agentId] || FALLBACK
+  }
 }
